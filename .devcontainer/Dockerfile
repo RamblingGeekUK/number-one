@@ -19,10 +19,12 @@ ARG TARGET_SOCKET=/var/run/docker.sock
 ARG USERNAME=node
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
-COPY library-scripts/*.sh library-scripts/*.ps1 /tmp/library-scripts/
+COPY library-scripts/*.sh /tmp/library-scripts/
+COPY library-scripts/*.ps1 /tmp/library-scripts/
 RUN apt-get update \
-    && apt-get install /tmp/${PS_PACKAGE} \
-    && /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" \
+     && apt-get install /tmp/${PS_PACKAGE} \
+     && /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" \
+
     # Use Docker script from script library to set things up
     && /bin/bash /tmp/library-scripts/docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "${SOURCE_SOCKET}" "${TARGET_SOCKET}" "${USERNAME}" \
     # Setup Powershell environment
@@ -34,7 +36,8 @@ RUN apt-get update \
 # the Docker socket if "overrideCommand": false is set in devcontainer.json. 
 # The script will also execute CMD if you need to alter startup behaviors.
 ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
-CMD [ "sleep", "infinity" ]
+
+#CMD [ "sleep", "infinity" ]
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
